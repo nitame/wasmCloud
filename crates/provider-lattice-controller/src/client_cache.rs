@@ -166,6 +166,7 @@ async fn connect(cfg: &ConnectionConfig) -> Result<async_nats::Client> {
                 other => debug!("NATS client other event occurred: {other}"),
             }
         })
+        .name("belos-lattice-provider-ctrl")
         .connect(url)
         .await
         .with_context(|| format!("Nats connection to {url}"))?;
