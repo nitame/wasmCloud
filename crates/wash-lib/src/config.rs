@@ -239,7 +239,7 @@ pub async fn create_nats_client_from_opts(
             opts = opts.tls_first();
         }
 
-        opts.connect(&nats_url).await.with_context(|| {
+        opts.name("belos-washlib-config").connect(&nats_url).await.with_context(|| {
             format!(
                 "Failed to connect to NATS server {}:{} while creating client",
                 &host, &port
@@ -263,7 +263,7 @@ pub async fn create_nats_client_from_opts(
             opts = opts.tls_first();
         }
 
-        opts.connect(&nats_url).await.with_context(|| {
+        opts.name("belos-washlib-config").connect(&nats_url).await.with_context(|| {
             format!(
                 "Failed to connect to NATS {} with credentials file {:?}",
                 &nats_url, &credsfile_path
@@ -280,6 +280,7 @@ pub async fn create_nats_client_from_opts(
             opts = opts.tls_first();
         }
 
+        opts = opts.name("belos-washlib-config").retry_on_initial_connect();
         opts.connect(&nats_url)
             .await
             .with_context(|| format!("Failed to connect to NATS {}", &nats_url))?
